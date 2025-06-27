@@ -32,6 +32,8 @@ cat > $FOLDER/ca/$CA.cnf << EOF
 [ default ]
 ca                      = $CA
 fqdn                    = $CA
+ou			= OU
+cn			= CN
 dir                     = $FOLDER
 base_url                = http://repo.certs.es
 aia_url                 = \$base_url/\$ca.crt
@@ -90,10 +92,10 @@ x509_extensions         = ca_ext
 #req_extensions         = req_ext
 
 [ req_distinguished_name ]
-countryName             = ES
-stateOrProvinceName     = Spain
-localityName            = Lab
-organizationName        = LabCA
+countryName             = FI
+stateOrProvinceName     = Uusimaa
+localityName            = \$fqdn
+organizationName        = \$fqdn CA
 commonName              = \$fqdn
 
 ######################
