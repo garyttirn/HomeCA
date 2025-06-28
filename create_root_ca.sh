@@ -3,18 +3,22 @@
 # author: Dario Garrido                                                 #
 # date: 20210105                                                        #
 # description: Create enviroment and Root CA                            #
-# usage: ./create_root_ca.sh <ca_name>                                  #
+# usage: ./create_root_ca.sh <ca_name> <lo> <o> <ou>                    #
 #########################################################################
 
 #!/bin/sh
 
-if [ "$#" -ne 1 ]
+if [ "$#" -ne 4 ]
 then
-  echo "Usage: <ca_name>"
+  echo "Usage: <ca_name> <lo> <o> <ou>"
   exit 1
 fi
 
 CA=$1
+CN=$1
+LO=$2
+O=$3
+OU=$4
 #FOLDER=.
 FOLDER=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
@@ -32,10 +36,12 @@ cat > $FOLDER/ca/$CA.cnf << EOF
 [ default ]
 ca                      = $CA
 fqdn                    = $CA
-ou			= OU
-cn			= CN
+o			= $O
+ou			= $OU
+lo			= $LO
+cn			= $CN
 dir                     = $FOLDER
-base_url                = http://repo.certs.es
+base_url                = http://ca.satumaa.ydns.eu/
 aia_url                 = \$base_url/\$ca.crt
 crl_url                 = \$base_url/\$ca.crl
 
@@ -94,9 +100,10 @@ x509_extensions         = ca_ext
 [ req_distinguished_name ]
 countryName             = FI
 stateOrProvinceName     = Uusimaa
-localityName            = \$fqdn
-organizationName        = \$fqdn CA
-commonName              = \$fqdn
+localityName            = \$lo
+organizationName        = \$o
+organizationalUnitName  = \$ou
+commonName              = \$cn
 
 ######################
 # --- EXTENSIONS --- #
