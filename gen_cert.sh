@@ -21,6 +21,7 @@ DOMAIN=$2
 FOLDER=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 sed -i -E "s/(^fqdn\s+=\s).*/\1$(echo $DOMAIN | sed -E "s/[Ww]ildcard/\*/")/" $FOLDER/ca/$CA.cnf
+sed -i -E "s/(^cn\s+=\s).*/\1$(echo $DOMAIN | sed -E "s/[Ww]ildcard/\*/")/" $FOLDER/ca/$CA.cnf
 
 openssl req -new -config $FOLDER/ca/$CA.cnf -out $FOLDER/certs/$DOMAIN.csr -keyout $FOLDER/certs/$DOMAIN.key -nodes
 openssl ca -config $FOLDER/ca/$CA.cnf -in $FOLDER/certs/$DOMAIN.csr -out $FOLDER/certs/$DOMAIN.crt
